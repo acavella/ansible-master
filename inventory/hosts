@@ -1,0 +1,9 @@
+all:
+  hosts:
+  children:
+    webservers:
+      hosts:
+        internetpi.lan.cavella.com
+        docker.lan.cavella.com
+        wireguard.lan.cavella.com
+        ansible.lan.cavella.com
