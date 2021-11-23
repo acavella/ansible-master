@@ -1,0 +1,11 @@
+---
+- name: Install Prereqs
+  hosts: webservers
+  remote_user: pi
+
+  tasks:
+  - name: Install latest version of git
+    apt:
+      name: git
+      state: latest
+    become: yes
