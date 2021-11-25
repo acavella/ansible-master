@@ -4,8 +4,10 @@
   remote_user: pi
 
   tasks:
-  - name: Install latest version of git
+  - name: Update apt cache and install git
     apt:
       name: git
       state: latest
+      update_cache: yes
+      autoclean: yes
     become: yes
