@@ -3,5 +3,8 @@ internetpi.lan.cavella.com
 docker.lan.cavella.com
 wireguard.lan.cavella.com
 
+[vpn]
+wireguard.lan.cavella.com
+
 [ansible-master]
 ansible.lan.cavella.com
