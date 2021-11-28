@@ -1,0 +1,32 @@
+---
+- name: Install and Configure Wireguard on Raspberry Pi
+  hosts: wireguard
+  remote_user: pi
+  become: yes
+
+  pre_tasks:
+  - name: Update apt cache
+    apt:
+      update_cache: yes
+
+  tasks:
+  - name: Install wireguard
+    apt:
+      name: wireguard
+      state: latest
+      autoclean: yes
+
+  - name: Generate server and client keys
+    shell: |
+      cd /etc/wireguard
+      umask 077
+      wg genkey | tee server_private_key | wg pubkey > server_public_key
+      wg genkey | tee client_private_key | wg pubkey > client_public_key
+    args:
+      executable: /bin/bash
+       
+  - name: Set keys to variable
+    set_fact:
+      server_private_key: "{{ lookup('file', 'server_private_key') }}"
+      client_public_key: "{{ lookup('file', 'client_public_key') }}"
+
