@@ -1,6 +1,6 @@
 ---
 - name: Install and Configure Wireguard on Raspberry Pi
-  hosts: wireguard
+  hosts: vpn
   remote_user: pi
   become: yes
 
@@ -24,11 +24,21 @@
       wg genkey | tee client_private_key | wg pubkey > client_public_key
     args:
       executable: /bin/bash
-       
-  - name: Set keys to variable
+      
+  - name: Set server private key to variable
+    slurp:
+      src: /etc/wireguard/server_private_key
+    register: server_private_key_encoded
+
+  - name: Set client public key to variable
+    slurp: 
+      src: /etc/wireguard/client_public_key
+    register: client_public_key_encoded
+
+  - name: Decode keys
     set_fact:
-      server_private_key: "{{ lookup('file', 'server_private_key') }}"
-      client_public_key: "{{ lookup('file', 'client_public_key') }}"
+      server_private_key: "{{server_private_key_encoded.content | b64decode}}"
+      client_public_key: "{{client_public_key_encoded.content | b64decode}}"
 
   - name: Update template and copy to destination server
     template:
