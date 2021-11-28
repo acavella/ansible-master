@@ -32,5 +32,5 @@
 
   - name: Update template and copy to destination server
     template:
-      src: ../templates/wg0.j2
+      src: templates/wg0.j2
       dest: /etc/wireguard/wg0.conf
